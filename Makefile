@@ -15,10 +15,10 @@ options:
 	@echo "LDFLAGS = $(STLDFLAGS)"
 	@echo "CC      = $(CC)"
 
-config.h:
+config.h: config.def.h
 	cp config.def.h config.h
 
-patches.h:
+patches.h: patches.def.h
 	cp patches.def.h patches.h
 
 .c.o:
@@ -33,7 +33,7 @@ st: $(OBJ)
 	$(CC) -o $@ $(OBJ) $(STLDFLAGS)
 
 clean:
-	rm -f st $(OBJ) st-$(VERSION).tar.gz
+	rm -f st $(OBJ) st-$(VERSION).tar.gz config.h patches.h
 
 dist: clean
 	mkdir -p st-$(VERSION)
