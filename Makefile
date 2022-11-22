@@ -19,7 +19,7 @@ config.h: config.def.h
 	cp config.def.h config.h
 
 patches.h: patches.def.h
-	cp patches.def.h patches.h
+	cp patches.def.h
 
 .c.o:
 	$(CC) $(STCFLAGS) -c $<
@@ -27,13 +27,13 @@ patches.h: patches.def.h
 st.o: config.h st.h win.h
 x.o: arg.h config.h st.h win.h $(LIGATURES_H)
 
-$(OBJ): config.h config.mk patches.h
+$(OBJ): config.h config.mk
 
 st: $(OBJ)
 	$(CC) -o $@ $(OBJ) $(STLDFLAGS)
 
 clean:
-	rm -f st $(OBJ) st-$(VERSION).tar.gz config.h patches.h
+	rm -f st $(OBJ) st-$(VERSION).tar.gz config.h
 
 dist: clean
 	mkdir -p st-$(VERSION)
