@@ -1,12 +1,5 @@
-#if SCROLLBACK_PATCH && !VIM_BROWSE_PATCH
 #define TLINEURL(y) TLINE(y)
-#else
-#define TLINEURL(y) term.line[y]
-#endif // SCROLLBACK_PATCH
 
-#if VIM_BROWSE_PATCH
-extern int buffCols;
-#endif // VIM_BROWSE_PATCH
 
 int url_x1, url_y1, url_x2, url_y2 = -1;
 int url_draw, url_click, url_maxcol;
@@ -27,13 +20,7 @@ isvalidurlchar(Rune u)
 static int
 findeowl(int row)
 {
-	#if VIM_BROWSE_PATCH
-	int col = buffCols - 1;
-	#elif COLUMNS_PATCH
 	int col = term.maxcol - 1;
-	#else
-	int col = term.col - 1;
-	#endif // VIM_BROWSE_PATCH
 
 	do {
 		if (TLINEURL(row)[col].mode & ATTR_WRAP)
@@ -58,14 +45,10 @@ detecturl(int col, int row, int draw)
 	int row_start = row;
 	int col_start = col;
 	int i = sizeof(url)/2+1, j = sizeof(url)/2;
-	#if SCROLLBACK_PATCH && !VIM_BROWSE_PATCH
 	int minrow = term.scr - term.histn, maxrow = term.scr + term.row - 1;
 	/* Fixme: MODE_ALTSCREEN is not defined here, I had to use the magic number 1<<2 */
 	if ((term.mode & (1 << 2)) != 0)
 		minrow = 0, maxrow = term.row - 1;
-	#else
-	int minrow = 0, maxrow = term.row - 1;
-	#endif // scrollback_patch
 	url_maxcol = 0;
 
 	/* clear previously underlined url */
@@ -96,13 +79,7 @@ detecturl(int col, int row, int draw)
 		url_maxcol = MAX(url_maxcol, x2);
 		url[j++] = TLINEURL(row)[col].u;
 		wrapped = TLINEURL(row)[col].mode & ATTR_WRAP;
-		#if VIM_BROWSE_PATCH
-		if (++col >= buffCols || wrapped) {
-		#elif COLUMNS_PATCH
 		if (++col >= term.maxcol || wrapped) {
-		#else
-		if (++col >= term.col || wrapped) {
-		#endif // VIM_BROWSE_PATCH
 			col = 0;
 			if (++row > maxrow || !wrapped)
 				break;

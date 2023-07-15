@@ -15,14 +15,9 @@ kscrolldown(const Arg* a)
 		tfulldirt();
 	}
 
-	#if SIXEL_PATCH
-	scroll_images(-1*n);
-	#endif // SIXEL_PATCH
 
-	#if OPENURLONCLICK_PATCH
 	if (n > 0)
 		restoremousecursor();
-	#endif // OPENURLONCLICK_PATCH
 }
 
 void
@@ -44,12 +39,7 @@ kscrollup(const Arg* a)
 		tfulldirt();
 	}
 
-	#if SIXEL_PATCH
-	scroll_images(n);
-	#endif // SIXEL_PATCH
 
-	#if OPENURLONCLICK_PATCH
 	if (n > 0)
 		restoremousecursor();
-	#endif // OPENURLONCLICK_PATCH
 }
